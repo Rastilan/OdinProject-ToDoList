@@ -1,0 +1,51 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+.page {
+    display:grid;
+    grid-template-rows: 10vh 90vh;
+}
+
+.header {
+    background: rgb(54, 54, 139);
+    display:flex;
+    align-items: center;
+    padding-left: 2em;
+
+}
+.header-text{
+    color: black;
+}
+.container {
+    display:grid;
+    grid-template-areas: 
+    "left right";
+    grid-template-columns: 20vw 80vw;
+    
+}
+.left {
+    padding: 2em 3em;
+    grid-area: left;
+    background: lightgrey;
+}
+.default-list {
+    color: black;
+    list-style-type: none;
+}
+.right {
+    padding: 2em 3em;
+    grid-area:right;
+    background: lightblue;
+
+}
+.current-list-title{
+    padding-bottom: 5em;
+}
+.tasks{
+    padding-left: 2em;
+    list-style-type: none;
+}
+.tasks li {
+    padding-bottom: 1em;
+}
