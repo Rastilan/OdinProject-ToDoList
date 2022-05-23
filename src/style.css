@@ -1,42 +1,44 @@
 * {
     padding: 0px;
     margin: 0px;
+    color: white;
 }
 .page {
     display:grid;
-    grid-template-rows: 10vh 90vh;
+    grid-template-rows: 4vh 96vh;
 }
 
 .header {
-    background: rgb(54, 54, 139);
+    background: rgb(54, 54, 54);
     display:flex;
     align-items: center;
     padding-left: 2em;
 
 }
-.header-text{
-    color: black;
-}
+
 .container {
     display:grid;
     grid-template-areas: 
     "left right";
-    grid-template-columns: 20vw 80vw;
+    grid-template-columns: 15vw auto;
     
 }
 .left {
     padding: 2em 3em;
     grid-area: left;
-    background: lightgrey;
+    background: rgb(37, 37, 37);
 }
 .default-list {
-    color: black;
+    
     list-style-type: none;
 }
 .right {
     padding: 2em 3em;
     grid-area:right;
-    background: lightblue;
+    background: rgb(24, 24, 24);
+    flex-direction: column;
+    display: flex;
+    align-items: center;
 
 }
 .current-list-title{
