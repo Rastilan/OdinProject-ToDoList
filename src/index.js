@@ -1,5 +1,7 @@
 import './style.css';
 
+window.listArray = [];
+
 window.SideBarController = function() {
     if(document.getElementsByClassName('left')[0].getAttribute('id') === 'expanded') {
         document.getElementsByClassName('container')[0].style.gridTemplateColumns = '0vw auto';
@@ -14,7 +16,29 @@ window.SideBarController = function() {
     
 }
 
-window.ListConstructor = function() {
-    this.
+window.ListConstructor = function(listTitle, listGroup) {
+    this.title = listTitle;
+    this.group = listGroup;
 }
 
+window.DisplayLists = function () {
+    let rootList = document.getElementById('default-list');
+
+    let newListLI = document.createElement('li');
+    
+
+    listArray.forEach(list => {
+        console.log(list);
+        console.log(listArray.indexOf(list));
+        let newListLI = document.createElement('li');
+        newListLI.innerHTML = list.title;
+        rootList.insertBefore(newListLI, rootList.children[listArray.indexOf(list)]);
+    })
+  
+}
+
+window.defaultList = new ListConstructor('todo', 'default'); 
+window.todayList = new ListConstructor('today', 'default');
+listArray.push(defaultList);
+listArray.push(todayList);
+DisplayLists();

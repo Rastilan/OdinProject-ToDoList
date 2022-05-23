@@ -28,7 +28,7 @@
     grid-area: left;
     background: rgb(37, 37, 37);
 }
-.default-list {
+#default-list {
     
     list-style-type: none;
 }
