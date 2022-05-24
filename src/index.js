@@ -16,9 +16,20 @@ window.SideBarController = function() {
     
 }
 
-window.ListConstructor = function(listTitle, listGroup) {
-    this.title = listTitle;
-    this.group = listGroup;
+class ListConstructor  {
+    taskArray = [];
+
+    constructor(listTitle, listGroup) {
+        this.title = listTitle;
+        this.group = listGroup;
+    }
+    tasksConstructor(val){
+        
+        return taskArray.push(val);
+    }
+    tasks() {
+        return console.log("test");
+    }
 }
 
 window.DisplayLists = function () {
