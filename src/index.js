@@ -1,5 +1,6 @@
 import './style.css';
 
+let selectedList = 'todo';
 window.listArray = [];
 
 window.SideBarController = function() {
@@ -16,40 +17,56 @@ window.SideBarController = function() {
     
 }
 
-class ListConstructor  {
-    taskArray = [];
 
-    constructor(listTitle, listGroup) {
+
+class ListConstructor  {
+
+    constructor(listTitle, listGroup, listColor) {
         this.title = listTitle;
         this.group = listGroup;
+        this.color = listColor;
     }
-    tasksConstructor(val){
-        
-        return taskArray.push(val);
-    }
-    tasks() {
-        return console.log("test");
-    }
+    tasks = [];
 }
 
 window.DisplayLists = function () {
     let rootList = document.getElementById('default-list');
-
-    let newListLI = document.createElement('li');
     
 
     listArray.forEach(list => {
-        console.log(list);
-        console.log(listArray.indexOf(list));
         let newListLI = document.createElement('li');
         newListLI.innerHTML = list.title;
+        newListLI.setAttribute('onclick', 'SelectList(' + list.title + ')');
+        newListLI.setAttribute('id', list.title);
         rootList.insertBefore(newListLI, rootList.children[listArray.indexOf(list)]);
     })
   
 }
 
-window.defaultList = new ListConstructor('todo', 'default'); 
-window.todayList = new ListConstructor('today', 'default');
-listArray.push(defaultList);
-listArray.push(todayList);
+window.DisplayTasks = function (tasksToDisplay) {
+    let rootTasks = document.getElementById('tasks');
+    console.log(tasksToDisplay);
+
+    defaultList.tasks.forEach(tasks => {
+        let newTasksLI = document.createElement('li');
+        //newTasksLI.innerHTML = selectedList.title;
+        rootTasks.insertBefore(newTasksLI, rootTasks.children[defaultList.tasks.indexOf(tasks)]);
+    })
+}
+
+
+window.SelectList = (selectListClick) => {
+    if(!selectedList){
+        console.log('we ran into a bug with SelectList function');
+    } else {
+        selectedList = selectListClick;
+        DisplayTasks(selectedList);
+    }
+}
+
+window.defaultList = new ListConstructor('todo', 'default', 'blue'); 
+window.todayList = new ListConstructor('today', 'default', 'green');
+window.upcomingList = new ListConstructor('upcoming', 'default', 'orange');
+listArray.push(defaultList, todayList, upcomingList);
 DisplayLists();
+
