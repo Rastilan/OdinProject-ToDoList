@@ -38,8 +38,8 @@
     background: rgb(24, 24, 24);
     flex-direction: column;
     display: flex;
-    align-items: center;
-
+    align-items: stretch;
+    padding: 4rem 13rem 0rem 13rem;
 }
 .current-list-title{
     padding-bottom: 5em;
@@ -53,4 +53,16 @@
 }
 #new-task {
     color: red;
+}
+#task-creation-title {
+    width:100%;
+}
+
+input[type="text"], textarea {
+
+    background-color :  rgb(54, 54, 54);
+  
+  }
+#task-creation-button {
+    background:rgb(24, 24, 24);
 }

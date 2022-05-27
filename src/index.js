@@ -29,6 +29,14 @@ class ListConstructor  {
     tasks = [];
 }
 
+class TaskConstuctor {
+    constructor(taskTitle) {
+    this.title = taskTitle;
+    
+    }
+    
+}
+
 window.DisplayLists = function () {
     let rootList = document.getElementById('default-list');
     
@@ -69,8 +77,26 @@ window.NewTask = () => {
     let rootNewTasks = document.getElementById('new-task');
     let taskCreationDiv = document.createElement('div');
         taskCreationDiv.setAttribute('id', 'task-creation');
+    let taskCreationBtn = document.createElement('button');
+        taskCreationBtn.innerText = "New Task";
+        taskCreationBtn.setAttribute('id', 'task-creation-button');
+        taskCreationBtn.setAttribute('onclick', 'PushNewTask()');
+    let taskCreationTitle = document.createElement('input');
+        taskCreationTitle.setAttribute('type', 'text');
+        taskCreationTitle.setAttribute('id', 'task-creation-title');
+        
+
+
         rootNewTasks.insertBefore(taskCreationDiv, rootNewTasks.children[0]);
-    console.log(selectedList);
+        taskCreationDiv.insertBefore(taskCreationTitle, taskCreationDiv.children[0]);
+        taskCreationDiv.insertBefore(taskCreationBtn, taskCreationDiv.children[1]);
+        rootNewTasks.setAttribute('onclick', '');
+        
+}
+
+window.PushNewTask = () => {
+    
+    defaultList.tasks.push(new TaskConstuctor(document.getElementById('task-creation-title')));
 }
 
 window.defaultList = new ListConstructor('todo', 'default', 'blue'); 
