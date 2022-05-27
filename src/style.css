@@ -51,3 +51,6 @@
 .tasks li {
     padding-bottom: 1em;
 }
+#new-task {
+    color: red;
+}

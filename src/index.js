@@ -43,13 +43,14 @@ window.DisplayLists = function () {
   
 }
 
-window.DisplayTasks = function (tasksToDisplay) {
+window.DisplayTasks = function (selectedList) {
     let rootTasks = document.getElementById('tasks');
-    console.log(tasksToDisplay);
+    document.querySelectorAll('.displayed-task').forEach(el => el.remove());
 
     defaultList.tasks.forEach(tasks => {
         let newTasksLI = document.createElement('li');
-        //newTasksLI.innerHTML = selectedList.title;
+        newTasksLI.innerHTML = tasks.title;
+        newTasksLI.classList.add('displayed-task');
         rootTasks.insertBefore(newTasksLI, rootTasks.children[defaultList.tasks.indexOf(tasks)]);
     })
 }
@@ -59,9 +60,17 @@ window.SelectList = (selectListClick) => {
     if(!selectedList){
         console.log('we ran into a bug with SelectList function');
     } else {
-        selectedList = selectListClick;
+        selectedList = selectListClick.id;
         DisplayTasks(selectedList);
     }
+}
+
+window.NewTask = () => {
+    let rootNewTasks = document.getElementById('new-task');
+    let taskCreationDiv = document.createElement('div');
+        taskCreationDiv.setAttribute('id', 'task-creation');
+        rootNewTasks.insertBefore(taskCreationDiv, rootNewTasks.children[0]);
+    console.log(selectedList);
 }
 
 window.defaultList = new ListConstructor('todo', 'default', 'blue'); 
