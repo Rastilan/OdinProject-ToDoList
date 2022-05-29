@@ -1,3 +1,4 @@
+import { isThisWeek } from 'date-fns';
 import './style.css';
 
 let selectedList = 'todo';
@@ -30,8 +31,13 @@ class ListConstructor  {
 }
 
 class TaskConstuctor {
-    constructor(taskTitle) {
+    constructor(taskTitle, taskDesc, taskDate, taskGroup, taskFlag, taskChecked) {
     this.title = taskTitle;
+    this.desc = taskDesc;
+    this.date = taskDate;
+    this.group = taskGroup;
+    this.flag = taskFlag;
+    this.checked = taskChecked;
     
     }
     
@@ -74,28 +80,49 @@ window.SelectList = (selectListClick) => {
 }
 
 window.NewTask = () => {
+    // Set root DIV of the New Task section (where it goes in the DOM)
     let rootNewTasks = document.getElementById('new-task');
+    // The Div it all goes in
     let taskCreationDiv = document.createElement('div');
         taskCreationDiv.setAttribute('id', 'task-creation');
+        // New Task Button - adds the information to the task array
     let taskCreationBtn = document.createElement('button');
         taskCreationBtn.innerText = "New Task";
         taskCreationBtn.setAttribute('id', 'task-creation-button');
         taskCreationBtn.setAttribute('onclick', 'PushNewTask()');
-    let taskCreationTitle = document.createElement('input');
+        // Takes in the name/title of the task
+    let taskCreationTitle = document.createElement('textarea');
         taskCreationTitle.setAttribute('type', 'text');
         taskCreationTitle.setAttribute('id', 'task-creation-title');
-        
+        taskCreationTitle.setAttribute('placeholder', 'Name of task');
+        taskCreationTitle.setAttribute('maxlength', '40');
+        taskCreationTitle.setAttribute('required', 'true');
+        // Takes in a description of the task
+    let taskCreationDesc = document.createElement('textarea');
+        taskCreationDesc.setAttribute('type', 'textarea');
+        taskCreationDesc.setAttribute('id', 'task-creation-desc');
+        taskCreationDesc.setAttribute('placeholder', 'Description of task');
+        taskCreationDesc.setAttribute('maxlength', '140');
+        taskCreationDesc.setAttribute('required', 'true');
+        // Sets the date of the task
+    let taskCreationDate = document.createElement('input');
+        taskCreationDate.setAttribute('type', 'date');
+        taskCreationDate.setAttribute('id', 'task-creation-date');
+        taskCreationDate.setAttribute('placeholder', 'Date');
+        // Sets the Group the task falls into / If left empty is just added to the default list
+    
 
 
         rootNewTasks.insertBefore(taskCreationDiv, rootNewTasks.children[0]);
         taskCreationDiv.insertBefore(taskCreationTitle, taskCreationDiv.children[0]);
-        taskCreationDiv.insertBefore(taskCreationBtn, taskCreationDiv.children[1]);
+        taskCreationDiv.insertBefore(taskCreationDesc, taskCreationDiv.children[1]);
+        taskCreationDiv.insertBefore(taskCreationBtn, taskCreationDiv.children[2]);
         rootNewTasks.setAttribute('onclick', '');
         
 }
 
 window.PushNewTask = () => {
-    
+    // Tasks are built as Title / Description / Date / Group / Flag / Checked
     defaultList.tasks.push(new TaskConstuctor(document.getElementById('task-creation-title')));
 }
 

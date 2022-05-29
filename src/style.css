@@ -56,6 +56,11 @@
 }
 #task-creation-title {
     width:100%;
+    border: none;
+}
+#task-creation-desc {
+    width:100%;
+    border: none;
 }
 
 input[type="text"], textarea {
