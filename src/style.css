@@ -54,20 +54,58 @@
 #new-task {
     color: red;
 }
+#task-creation {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+    "title"
+    "desc"
+    "date group"
+    "new cancel";
+    
+}
 #task-creation-title {
     width:100%;
     border: none;
+    grid-area: title;
 }
 #task-creation-desc {
     width:100%;
     border: none;
+    grid-area: desc;
 }
-
+#task-creation-date {
+    grid-area: date;
+}
+#task-creation-group {
+    grid-area: group;
+}
+#task-creation-button {
+    grid-area: new;
+}
+#task-creation-cancel-button {
+    grid-area: cancel;
+}
 input[type="text"], textarea {
 
-    background-color :  rgb(54, 54, 54);
+    background-color :  rgb(24, 24, 24);
+    resize: none; 
   
-  }
+}
+input[type='date'], input {
+    background-color :  rgb(24, 24, 24);
+    resize: none; 
+    padding-right: 5px;
+
+}
 #task-creation-button {
-    background:rgb(24, 24, 24);
+    background:rgb(255, 87, 87);
+    border: none;
+    padding: 5px;
+}
+#task-creation-cancel-button {
+    background:rgb(54, 54, 54);
+    border: none;
+    padding: 5px;
 }

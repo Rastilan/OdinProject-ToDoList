@@ -79,17 +79,12 @@ window.SelectList = (selectListClick) => {
     }
 }
 
-window.NewTask = () => {
+window.NewTask = function() {
     // Set root DIV of the New Task section (where it goes in the DOM)
     let rootNewTasks = document.getElementById('new-task');
     // The Div it all goes in
     let taskCreationDiv = document.createElement('div');
         taskCreationDiv.setAttribute('id', 'task-creation');
-        // New Task Button - adds the information to the task array
-    let taskCreationBtn = document.createElement('button');
-        taskCreationBtn.innerText = "New Task";
-        taskCreationBtn.setAttribute('id', 'task-creation-button');
-        taskCreationBtn.setAttribute('onclick', 'PushNewTask()');
         // Takes in the name/title of the task
     let taskCreationTitle = document.createElement('textarea');
         taskCreationTitle.setAttribute('type', 'text');
@@ -109,21 +104,58 @@ window.NewTask = () => {
         taskCreationDate.setAttribute('type', 'date');
         taskCreationDate.setAttribute('id', 'task-creation-date');
         taskCreationDate.setAttribute('placeholder', 'Date');
+        taskCreationDate.setAttribute('height', '20px');
+        taskCreationDate.style.border = 'none';
         // Sets the Group the task falls into / If left empty is just added to the default list
-    
+    let taskCreationGroup = document.createElement('textarea');
+        taskCreationGroup.setAttribute('type', 'text');
+        taskCreationGroup.setAttribute('id', 'task-creation-group');
+        taskCreationGroup.setAttribute('placeholder', 'Group Name');
+        taskCreationGroup.setAttribute('maxlength', '20');
+        taskCreationGroup.setAttribute('height', '20px');
+        taskCreationGroup.style.border = 'none';
+        taskCreationGroup.setAttribute('rows', '1');
+        // New Task Button - adds the information to the task array
+    let taskCreationBtn = document.createElement('button');
+        taskCreationBtn.innerText = "New Task";
+        taskCreationBtn.setAttribute('id', 'task-creation-button');
+        taskCreationBtn.setAttribute('onclick', 'PushNewTask();');
+        // Cancel Task Creation Button - closes and removes all the elements pertaining to adding info to the array
+    let taskCreationCancelBtn = document.createElement('button');
+        taskCreationCancelBtn.innerHTML = "Cancel";
+        taskCreationCancelBtn.setAttribute('id', 'task-creation-cancel-button');
+        taskCreationCancelBtn.setAttribute('onclick', 'CancelNewTask()');
 
-
-        rootNewTasks.insertBefore(taskCreationDiv, rootNewTasks.children[0]);
+        rootNewTasks.insertAdjacentElement('afterend', taskCreationDiv);
         taskCreationDiv.insertBefore(taskCreationTitle, taskCreationDiv.children[0]);
         taskCreationDiv.insertBefore(taskCreationDesc, taskCreationDiv.children[1]);
-        taskCreationDiv.insertBefore(taskCreationBtn, taskCreationDiv.children[2]);
+        taskCreationDiv.insertBefore(taskCreationDate, taskCreationDiv.children[2]);
+        taskCreationDiv.insertBefore(taskCreationGroup, taskCreationDiv.children[3]);
+        taskCreationDiv.insertBefore(taskCreationBtn, taskCreationDiv.children[4]);
+        taskCreationDiv.insertBefore(taskCreationCancelBtn, taskCreationDiv.children[5]);
+
+        
         rootNewTasks.setAttribute('onclick', '');
         
 }
 
 window.PushNewTask = () => {
     // Tasks are built as Title / Description / Date / Group / Flag / Checked
-    defaultList.tasks.push(new TaskConstuctor(document.getElementById('task-creation-title')));
+    //document.getElementById('new-task').setAttribute('onclick', '')
+    /*let newTitle = document.getElementById('task-creation-title').value;
+    let newDesc = document.getElementById('task-creation-desc').value;
+    let newDate = document.getElementById('task-creation-date').value;
+    let newGroup = document.getElementById('task-creation-group').value;
+    let newFlag = false;
+    let newChecked = false;
+    defaultList.tasks.push(new TaskConstuctor(newTitle, newDesc, newDate, newGroup, newFlag, newChecked));
+    
+    document.getElementById('task-creation').remove();
+    document.getElementById('task-creation-button').remove();
+    document.getElementById('task-creation-cancel-button').remove();
+    
+    
+   */ console.log('test');
 }
 
 window.defaultList = new ListConstructor('todo', 'default', 'blue'); 
