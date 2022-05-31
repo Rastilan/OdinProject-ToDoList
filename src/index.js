@@ -1,22 +1,12 @@
-import { isThisWeek } from 'date-fns';
+import { isThisWeek, isToday, parseISO } from 'date-fns';
 import './style.css';
+import { SideBarController } from '../modules/side-bar-controller';
+import { NewTask } from '../modules/new-task';
 
-let selectedList = 'todo';
+
+let selectedList = 'ToDo';
 window.listArray = [];
 
-window.SideBarController = function() {
-    if(document.getElementsByClassName('left')[0].getAttribute('id') === 'expanded') {
-        document.getElementsByClassName('container')[0].style.gridTemplateColumns = '0vw auto';
-        document.getElementsByClassName('left')[0].setAttribute('id', 'collapsed');
-        document.getElementById('side-bar-controller').innerHTML = '>';
-    }   else {
-        document.getElementsByClassName('container')[0].style.gridTemplateColumns = '15vw auto';
-        document.getElementsByClassName('left')[0].setAttribute('id', 'expanded');
-        document.getElementById('side-bar-controller').innerHTML = '<';
-    }
-    
-    
-}
 
 
 
@@ -57,15 +47,49 @@ window.DisplayLists = function () {
   
 }
 
-window.DisplayTasks = function (selectedList) {
+window.DisplayTasks = function () {
     let rootTasks = document.getElementById('tasks');
     document.querySelectorAll('.displayed-task').forEach(el => el.remove());
+    let listToDisplay = document.getElementsByClassName('selected-list')[0].id;
+    
+    defaultList.tasks
+    
+    .filter (function (toSort){
+        if(listToDisplay == 'ToDo') {
+            return toSort;
+        }
+        if(listToDisplay == 'Today' && isToday(toSort.date)) {
+            return toSort;
+        }
+        if(listToDisplay == 'ThisWeek' && isThisWeek(toSort.date)){
+            return toSort;
+        }
+        else{ 
+            console.log('filter failed in DisplayTasks Function');
+        }
 
-    defaultList.tasks.forEach(tasks => {
-        let newTasksLI = document.createElement('li');
-        newTasksLI.innerHTML = tasks.title;
-        newTasksLI.classList.add('displayed-task');
-        rootTasks.insertBefore(newTasksLI, rootTasks.children[defaultList.tasks.indexOf(tasks)]);
+    })
+    .forEach(function(tasks) {
+        let rootTaskDiv = document.createElement('div');
+        rootTaskDiv.classList.add('displayed-task');
+        let newTaskTitle = document.createElement('div');
+        newTaskTitle.innerHTML = tasks.title;
+        newTaskTitle.classList.add('displayed-task-title');
+        let newTaskDesc = document.createElement('div');
+        newTaskDesc.innerHTML = tasks.desc;
+        newTaskDesc.classList.add('displayed-task-desc');
+        let newTaskDate = document.createElement('div');
+        newTaskDate.innerHTML = tasks.date;     
+        newTaskDate.classList.add('displayed-task-date');
+        let newTaskGroup = document.createElement('div');
+        newTaskGroup.innerHTML = tasks.group;
+        newTaskGroup.classList.add('displayed-task-group');
+        
+        rootTasks.insertBefore(rootTaskDiv, rootTasks.children[defaultList.tasks.indexOf(tasks)])
+        rootTaskDiv.insertBefore(newTaskGroup, rootTaskDiv.children[0]);
+        rootTaskDiv.insertBefore(newTaskDate, rootTaskDiv.children[1]);
+        rootTaskDiv.insertBefore(newTaskDesc, rootTaskDiv.children[2]);
+        rootTaskDiv.insertBefore(newTaskTitle, rootTaskDiv.children[3]);
     })
 }
 
@@ -75,92 +99,52 @@ window.SelectList = (selectListClick) => {
         console.log('we ran into a bug with SelectList function');
     } else {
         selectedList = selectListClick.id;
-        DisplayTasks(selectedList);
+        document.getElementsByClassName('selected-list')[0].classList.remove('selected-list');
+        document.getElementById(selectedList).classList.add('selected-list');
+        DisplayTasks();
+        document.getElementById('current-list-title').innerHTML = selectedList;
     }
 }
 
-window.NewTask = function() {
-    // Set root DIV of the New Task section (where it goes in the DOM)
-    let rootNewTasks = document.getElementById('new-task');
-    // The Div it all goes in
-    let taskCreationDiv = document.createElement('div');
-        taskCreationDiv.setAttribute('id', 'task-creation');
-        // Takes in the name/title of the task
-    let taskCreationTitle = document.createElement('textarea');
-        taskCreationTitle.setAttribute('type', 'text');
-        taskCreationTitle.setAttribute('id', 'task-creation-title');
-        taskCreationTitle.setAttribute('placeholder', 'Name of task');
-        taskCreationTitle.setAttribute('maxlength', '40');
-        taskCreationTitle.setAttribute('required', 'true');
-        // Takes in a description of the task
-    let taskCreationDesc = document.createElement('textarea');
-        taskCreationDesc.setAttribute('type', 'textarea');
-        taskCreationDesc.setAttribute('id', 'task-creation-desc');
-        taskCreationDesc.setAttribute('placeholder', 'Description of task');
-        taskCreationDesc.setAttribute('maxlength', '140');
-        taskCreationDesc.setAttribute('required', 'true');
-        // Sets the date of the task
-    let taskCreationDate = document.createElement('input');
-        taskCreationDate.setAttribute('type', 'date');
-        taskCreationDate.setAttribute('id', 'task-creation-date');
-        taskCreationDate.setAttribute('placeholder', 'Date');
-        taskCreationDate.setAttribute('height', '20px');
-        taskCreationDate.style.border = 'none';
-        // Sets the Group the task falls into / If left empty is just added to the default list
-    let taskCreationGroup = document.createElement('textarea');
-        taskCreationGroup.setAttribute('type', 'text');
-        taskCreationGroup.setAttribute('id', 'task-creation-group');
-        taskCreationGroup.setAttribute('placeholder', 'Group Name');
-        taskCreationGroup.setAttribute('maxlength', '20');
-        taskCreationGroup.setAttribute('height', '20px');
-        taskCreationGroup.style.border = 'none';
-        taskCreationGroup.setAttribute('rows', '1');
-        // New Task Button - adds the information to the task array
-    let taskCreationBtn = document.createElement('button');
-        taskCreationBtn.innerText = "New Task";
-        taskCreationBtn.setAttribute('id', 'task-creation-button');
-        taskCreationBtn.setAttribute('onclick', 'PushNewTask();');
-        // Cancel Task Creation Button - closes and removes all the elements pertaining to adding info to the array
-    let taskCreationCancelBtn = document.createElement('button');
-        taskCreationCancelBtn.innerHTML = "Cancel";
-        taskCreationCancelBtn.setAttribute('id', 'task-creation-cancel-button');
-        taskCreationCancelBtn.setAttribute('onclick', 'CancelNewTask()');
 
-        rootNewTasks.insertAdjacentElement('afterend', taskCreationDiv);
-        taskCreationDiv.insertBefore(taskCreationTitle, taskCreationDiv.children[0]);
-        taskCreationDiv.insertBefore(taskCreationDesc, taskCreationDiv.children[1]);
-        taskCreationDiv.insertBefore(taskCreationDate, taskCreationDiv.children[2]);
-        taskCreationDiv.insertBefore(taskCreationGroup, taskCreationDiv.children[3]);
-        taskCreationDiv.insertBefore(taskCreationBtn, taskCreationDiv.children[4]);
-        taskCreationDiv.insertBefore(taskCreationCancelBtn, taskCreationDiv.children[5]);
-
-        
-        rootNewTasks.setAttribute('onclick', '');
-        
-}
 
 window.PushNewTask = () => {
     // Tasks are built as Title / Description / Date / Group / Flag / Checked
-    //document.getElementById('new-task').setAttribute('onclick', '')
-    /*let newTitle = document.getElementById('task-creation-title').value;
+    document.getElementById('new-task').setAttribute('onclick', '')
+    let newTitle = document.getElementById('task-creation-title').value;
     let newDesc = document.getElementById('task-creation-desc').value;
-    let newDate = document.getElementById('task-creation-date').value;
+    let newDate = parseISO(document.getElementById('task-creation-date').value);
     let newGroup = document.getElementById('task-creation-group').value;
+
     let newFlag = false;
     let newChecked = false;
-    defaultList.tasks.push(new TaskConstuctor(newTitle, newDesc, newDate, newGroup, newFlag, newChecked));
+    // HERES WHERE I AM TODAY!
+    for(let i = 0; i < document.getElementById('default-list').children.length; i++){
+        if(newGroup == document.getElementById('default-list').children[i].id) {
+            console.log(newGroup);
+            return;
+        }
+        if(i = document.getElementById('default-list').children.length){
+            console.log('run');
+        }
+            
+        
+    }
+    if(newTitle !== "" && newDesc !== "" && newDate !== "" && newGroup !== ""){
+        defaultList.tasks.push(new TaskConstuctor(newTitle, newDesc, newDate, newGroup, newFlag, newChecked));
+        document.getElementById('task-creation').remove();
+        document.getElementById('new-task').setAttribute('onclick', 'NewTask()');
+        DisplayTasks();
+    } 
     
-    document.getElementById('task-creation').remove();
-    document.getElementById('task-creation-button').remove();
-    document.getElementById('task-creation-cancel-button').remove();
     
     
-   */ console.log('test');
 }
 
-window.defaultList = new ListConstructor('todo', 'default', 'blue'); 
-window.todayList = new ListConstructor('today', 'default', 'green');
-window.upcomingList = new ListConstructor('upcoming', 'default', 'orange');
+window.defaultList = new ListConstructor('ToDo', 'default', 'blue'); 
+window.todayList = new ListConstructor('Today', 'default', 'green');
+window.upcomingList = new ListConstructor('ThisWeek', 'default', 'orange');
+
 listArray.push(defaultList, todayList, upcomingList);
 DisplayLists();
-
+document.getElementById('ToDo').classList.add('selected-list');

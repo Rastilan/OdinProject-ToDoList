@@ -41,8 +41,8 @@
     align-items: stretch;
     padding: 4rem 13rem 0rem 13rem;
 }
-.current-list-title{
-    padding-bottom: 5em;
+#current-list-title{
+    padding-bottom: 2em;
 }
 .tasks{
     padding-left: 2em;
@@ -59,19 +59,17 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-areas:
-    "title"
-    "desc"
+    "title title"
+    "desc desc"
     "date group"
     "new cancel";
     
 }
 #task-creation-title {
-    width:100%;
     border: none;
     grid-area: title;
 }
 #task-creation-desc {
-    width:100%;
     border: none;
     grid-area: desc;
 }
@@ -102,10 +100,32 @@ input[type='date'], input {
 #task-creation-button {
     background:rgb(255, 87, 87);
     border: none;
-    padding: 5px;
 }
 #task-creation-cancel-button {
     background:rgb(54, 54, 54);
     border: none;
-    padding: 5px;
+}
+.displayed-task {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+    "displayedTitle displayedTitle"
+    "displayedDesc displayedDesc"
+    "displayedDate displayedGroup";
+}
+.displayed-task-title {
+    grid-area: displayedTitle;
+}
+.displayed-task-desc {
+    grid-area: displayedDesc;
+}
+.displayed-task-group {
+    grid-area: displayedGroup;
+}
+.displayed-task-date {
+    grid-area: displayedDate;
+}
+.selected-list {
+    color:red;
 }
