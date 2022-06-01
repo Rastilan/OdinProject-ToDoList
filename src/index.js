@@ -36,14 +36,21 @@ class TaskConstuctor {
 window.DisplayLists = function () {
     let rootList = document.getElementById('default-list');
     
+    
+    document.querySelectorAll('.displayed-list').forEach(el => el.remove());
+      
 
     listArray.forEach(list => {
         let newListLI = document.createElement('li');
         newListLI.innerHTML = list.title;
         newListLI.setAttribute('onclick', 'SelectList(' + list.title + ')');
         newListLI.setAttribute('id', list.title);
+        newListLI.classList.add('displayed-list');
         rootList.insertBefore(newListLI, rootList.children[listArray.indexOf(list)]);
     })
+    if(document.getElementsByClassName('selected-list').length < 1){
+        document.getElementById('ToDo').classList.add('selected-list');
+    }
   
 }
 
@@ -51,27 +58,31 @@ window.DisplayTasks = function () {
     let rootTasks = document.getElementById('tasks');
     document.querySelectorAll('.displayed-task').forEach(el => el.remove());
     let listToDisplay = document.getElementsByClassName('selected-list')[0].id;
-    
+    let i=0;
     defaultList.tasks
     
     .filter (function (toSort){
-        if(listToDisplay == 'ToDo') {
+        if(listToDisplay.toLowerCase() == 'todo') {
             return toSort;
         }
-        if(listToDisplay == 'Today' && isToday(toSort.date)) {
+        if(listToDisplay.toLowerCase() == 'today' && isToday(toSort.date)) {
             return toSort;
         }
-        if(listToDisplay == 'ThisWeek' && isThisWeek(toSort.date)){
+        if(listToDisplay.toLowerCase() == 'thisweek' && isThisWeek(toSort.date)){
+            return toSort;
+        }
+        if(listToDisplay.toLowerCase()  == toSort.group.toLowerCase() ){
             return toSort;
         }
         else{ 
-            console.log('filter failed in DisplayTasks Function');
+            
         }
 
     })
     .forEach(function(tasks) {
         let rootTaskDiv = document.createElement('div');
         rootTaskDiv.classList.add('displayed-task');
+        rootTaskDiv.id = "task" + i;
         let newTaskTitle = document.createElement('div');
         newTaskTitle.innerHTML = tasks.title;
         newTaskTitle.classList.add('displayed-task-title');
@@ -84,23 +95,33 @@ window.DisplayTasks = function () {
         let newTaskGroup = document.createElement('div');
         newTaskGroup.innerHTML = tasks.group;
         newTaskGroup.classList.add('displayed-task-group');
+        let newTaskEdit = document.createElement('button');
+        newTaskEdit.innerHTML = 'EDIT';
+        newTaskEdit.classList.add('displayed-task-edit');
+        newTaskEdit.setAttribute('onclick', 'EditTask('+'task'+i+')');
+        console.log(tasks);
         
         rootTasks.insertBefore(rootTaskDiv, rootTasks.children[defaultList.tasks.indexOf(tasks)])
-        rootTaskDiv.insertBefore(newTaskGroup, rootTaskDiv.children[0]);
-        rootTaskDiv.insertBefore(newTaskDate, rootTaskDiv.children[1]);
-        rootTaskDiv.insertBefore(newTaskDesc, rootTaskDiv.children[2]);
-        rootTaskDiv.insertBefore(newTaskTitle, rootTaskDiv.children[3]);
+        rootTaskDiv.insertBefore(newTaskEdit, rootTaskDiv.children[0])
+        rootTaskDiv.insertBefore(newTaskGroup, rootTaskDiv.children[1]);
+        rootTaskDiv.insertBefore(newTaskDate, rootTaskDiv.children[2]);
+        rootTaskDiv.insertBefore(newTaskDesc, rootTaskDiv.children[3]);
+        rootTaskDiv.insertBefore(newTaskTitle, rootTaskDiv.children[4]);
     })
 }
 
 
 window.SelectList = (selectListClick) => {
     if(!selectedList){
-        console.log('we ran into a bug with SelectList function');
+        selectedList = 'ToDo';
     } else {
         selectedList = selectListClick.id;
-        document.getElementsByClassName('selected-list')[0].classList.remove('selected-list');
-        document.getElementById(selectedList).classList.add('selected-list');
+        if(document.getElementsByClassName('selected-list')){
+            document.getElementsByClassName('selected-list')[0].classList.remove('selected-list');
+            document.getElementById(selectedList).classList.add('selected-list');
+        }
+        
+        
         DisplayTasks();
         document.getElementById('current-list-title').innerHTML = selectedList;
     }
@@ -118,14 +139,23 @@ window.PushNewTask = () => {
 
     let newFlag = false;
     let newChecked = false;
-    // HERES WHERE I AM TODAY!
+    
     for(let i = 0; i < document.getElementById('default-list').children.length; i++){
-        if(newGroup == document.getElementById('default-list').children[i].id) {
-            console.log(newGroup);
-            return;
+        if(newGroup.toLowerCase() == document.getElementById('default-list').children[i].id.toLowerCase() || newGroup.toLowerCase() == 'today' || newGroup.toLowerCase() == 'thisweek') {
+            break;
         }
         if(i = document.getElementById('default-list').children.length){
-            console.log('run');
+            let newList = [newGroup][0];
+            newList = new ListConstructor(newGroup, newGroup, 'yellow');
+            if(listArray.some(val => val.group.toLowerCase() === newGroup.toLowerCase())){
+                break;
+            }
+            else {
+                listArray.push(newList);
+
+            }
+            
+            
         }
             
         
@@ -135,16 +165,30 @@ window.PushNewTask = () => {
         document.getElementById('task-creation').remove();
         document.getElementById('new-task').setAttribute('onclick', 'NewTask()');
         DisplayTasks();
+        DisplayLists();
     } 
     
     
     
 }
 
+window.EditTask = (el) => {
+    console.log(el);
+}
+
+
+
+
+
+
+
+
+
+// LIST CONSTRUCTOR TITLE / GROUP / COLOR
 window.defaultList = new ListConstructor('ToDo', 'default', 'blue'); 
 window.todayList = new ListConstructor('Today', 'default', 'green');
 window.upcomingList = new ListConstructor('ThisWeek', 'default', 'orange');
 
 listArray.push(defaultList, todayList, upcomingList);
 DisplayLists();
-document.getElementById('ToDo').classList.add('selected-list');
+
