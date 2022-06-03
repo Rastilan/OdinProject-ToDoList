@@ -99,7 +99,7 @@ window.DisplayTasks = function () {
         newTaskEdit.innerHTML = 'EDIT';
         newTaskEdit.classList.add('displayed-task-edit');
         newTaskEdit.setAttribute('onclick', 'EditTask('+'task'+i+')');
-        console.log(tasks);
+
         
         rootTasks.insertBefore(rootTaskDiv, rootTasks.children[defaultList.tasks.indexOf(tasks)])
         rootTaskDiv.insertBefore(newTaskEdit, rootTaskDiv.children[0])
@@ -173,7 +173,13 @@ window.PushNewTask = () => {
 }
 
 window.EditTask = (el) => {
-    console.log(el);
+    let taskToEditGroup = el.children[1].innerHTML;
+    let taskToEditDate = el.children[2].innerHTML;
+    let taskToEditDesc = el.children[3].innerHTML;
+    let taskToEditTitle = el.children[4].innerHTML;
+    let edittedTaskGroup = document.createElement('textarea');
+
+    el.replaceChild(edittedTaskGroup, taskToEditGroup);
 }
 
 
