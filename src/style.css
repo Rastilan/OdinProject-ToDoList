@@ -134,3 +134,8 @@ input[type='date'], input {
 .selected-list {
     color:red;
 }
+.save-edit-button {
+    background:rgb(255, 87, 87);
+    border: none;
+    color: white;
+}

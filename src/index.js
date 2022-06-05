@@ -173,13 +173,70 @@ window.PushNewTask = () => {
 }
 
 window.EditTask = (el) => {
-    let taskToEditGroup = el.children[1].innerHTML;
-    let taskToEditDate = el.children[2].innerHTML;
-    let taskToEditDesc = el.children[3].innerHTML;
-    let taskToEditTitle = el.children[4].innerHTML;
-    let edittedTaskGroup = document.createElement('textarea');
+   // let taskToEditButtonVal = el.children[0].innerHTML;
+    let taskToEditGroupVal = el.children[1].innerHTML;
+    let taskToEditDateVal = el.children[2].innerHTML;
+    let taskToEditDescVal = el.children[3].innerHTML;
+    let taskToEditTitleVal = el.children[4].innerHTML;
+    let taskToEditButton = el.children[0];
+    let taskToEditGroup = el.children[1];
+    let taskToEditDate = el.children[2];
+    let taskToEditDesc = el.children[3];
+    let taskToEditTitle = el.children[4];
+    let editedTaskGroup = document.createElement('textarea');
+    let editedTaskDate = document.createElement('textarea');
+    let editedTaskDesc = document.createElement('textarea');
+    let editedTaskTitle = document.createElement('textarea');
+    let editedTaskButton = document.createElement('button');
+    editedTaskTitle.value = taskToEditTitleVal;
+    editedTaskGroup.value = taskToEditGroupVal;
+    editedTaskDate.value = taskToEditDateVal;
+    editedTaskDesc.value = taskToEditDescVal;
+    editedTaskButton.innerHTML = "Save Changes";
+    editedTaskButton.setAttribute('onclick', `SaveEdit()`);
 
-    el.replaceChild(edittedTaskGroup, taskToEditGroup);
+    editedTaskTitle.classList.add('displayed-task-title');
+    editedTaskGroup.classList.add('displayed-task-group');
+    editedTaskDate.classList.add('displayed-task-date');
+    editedTaskDesc.classList.add('displayed-task-desc');
+    editedTaskButton.classList.add('save-edit-button');
+
+
+    el.replaceChild(editedTaskGroup, taskToEditGroup);
+    el.replaceChild(editedTaskDate, taskToEditDate);
+    el.replaceChild(editedTaskDesc, taskToEditDesc);
+    el.replaceChild(editedTaskTitle, taskToEditTitle);
+    el.replaceChild(editedTaskButton, taskToEditButton);
+
+}
+window.SaveEdit = (el) => {
+    /*
+    let saveGroup = el.children[1].innerHTML;
+    let saveDate = el.children[2].innerHTML;
+    let saveDesc = el.children[3].innerHTML;
+    let saveTitle = el.children[4].innerHTML;
+   
+    let saveGroupDiv = document.createElement('div');
+    let saveDateDiv = document.createElement('div');
+    let saveDescDiv = document.createElement('div');
+    let saveTitleDiv = document.createElement('div');
+    let editButton = document.createElement('button');
+    
+    editButton.innerHTML = "EDIT";
+    editButton.setAttribute('onclick', `EditTask()`);
+
+    editedTaskTitle.classList.add('displayed-task-title');
+    editedTaskGroup.classList.add('displayed-task-group');
+    editedTaskDate.classList.add('displayed-task-date');
+    editedTaskDesc.classList.add('displayed-task-desc');
+    editedTaskButton.classList.add('save-edit-button');
+
+
+    el.replaceChild(editedTaskGroup, taskToEditGroup);
+    el.replaceChild(editedTaskDate, taskToEditDate);
+    el.replaceChild(editedTaskDesc, taskToEditDesc);
+    el.replaceChild(editedTaskTitle, taskToEditTitle);
+    el.replaceChild(editedTaskButton, taskToEditButton);*/
 }
 
 
