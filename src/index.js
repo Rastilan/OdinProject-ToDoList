@@ -193,7 +193,8 @@ window.EditTask = (el) => {
     editedTaskDate.value = taskToEditDateVal;
     editedTaskDesc.value = taskToEditDescVal;
     editedTaskButton.innerHTML = "Save Changes";
-    editedTaskButton.setAttribute('onclick', `SaveEdit()`);
+    let test = el.id;
+    editedTaskButton.setAttribute('onclick', `SaveEdit(${test})`);
 
     editedTaskTitle.classList.add('displayed-task-title');
     editedTaskGroup.classList.add('displayed-task-group');
@@ -209,12 +210,13 @@ window.EditTask = (el) => {
     el.replaceChild(editedTaskButton, taskToEditButton);
 
 }
-window.SaveEdit = (el) => {
-    /*
-    let saveGroup = el.children[1].innerHTML;
-    let saveDate = el.children[2].innerHTML;
-    let saveDesc = el.children[3].innerHTML;
-    let saveTitle = el.children[4].innerHTML;
+window.SaveEdit = (el) => {  
+    let editButtonOld = el.children[0];
+    let saveGroupVal = el.children[1];
+    let saveDateVal = el.children[2];
+    let saveDescVal = el.children[3];
+    let saveTitleVal = el.children[4];
+    
    
     let saveGroupDiv = document.createElement('div');
     let saveDateDiv = document.createElement('div');
@@ -223,20 +225,23 @@ window.SaveEdit = (el) => {
     let editButton = document.createElement('button');
     
     editButton.innerHTML = "EDIT";
-    editButton.setAttribute('onclick', `EditTask()`);
+    editButton.setAttribute('onclick', `EditTask(${el.id})`);
 
-    editedTaskTitle.classList.add('displayed-task-title');
-    editedTaskGroup.classList.add('displayed-task-group');
-    editedTaskDate.classList.add('displayed-task-date');
-    editedTaskDesc.classList.add('displayed-task-desc');
-    editedTaskButton.classList.add('save-edit-button');
+    saveTitleDiv.classList.add('displayed-task-title');
+    saveGroupDiv.classList.add('displayed-task-group');
+    saveDateDiv.classList.add('displayed-task-date');
+    saveDescDiv.classList.add('displayed-task-desc');
+    editButton.classList.add('save-edit-button');
 
-
-    el.replaceChild(editedTaskGroup, taskToEditGroup);
-    el.replaceChild(editedTaskDate, taskToEditDate);
-    el.replaceChild(editedTaskDesc, taskToEditDesc);
-    el.replaceChild(editedTaskTitle, taskToEditTitle);
-    el.replaceChild(editedTaskButton, taskToEditButton);*/
+    saveTitleDiv.innerHTML = saveTitleVal.value;
+    saveGroupDiv.innerHTML = saveGroupVal.value;
+    saveDateDiv.innerHTML = saveDateVal.value;
+    saveDescDiv.innerHTML = saveDescVal.value;
+    el.replaceChild(saveGroupDiv, el.children[1]);
+    el.replaceChild(saveDateDiv, el.children[2]);
+    el.replaceChild(saveDescDiv, el.children[3]);
+    el.replaceChild(saveTitleDiv, el.children[4]);
+    el.replaceChild(editButton, editButtonOld);
 }
 
 
