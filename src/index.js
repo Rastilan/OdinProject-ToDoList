@@ -7,6 +7,8 @@ import { NewTask } from '../modules/new-task';
 let selectedList = 'ToDo';
 window.listArray = [];
 
+let defaultList, todayList, upcomingList;
+
 
 
 
@@ -99,6 +101,7 @@ window.DisplayTasks = function () {
         newTaskEdit.innerHTML = 'EDIT';
         newTaskEdit.classList.add('displayed-task-edit');
         newTaskEdit.setAttribute('onclick', 'EditTask('+'task'+i+')');
+        
 
         
         rootTasks.insertBefore(rootTaskDiv, rootTasks.children[defaultList.tasks.indexOf(tasks)])
@@ -107,6 +110,8 @@ window.DisplayTasks = function () {
         rootTaskDiv.insertBefore(newTaskDate, rootTaskDiv.children[2]);
         rootTaskDiv.insertBefore(newTaskDesc, rootTaskDiv.children[3]);
         rootTaskDiv.insertBefore(newTaskTitle, rootTaskDiv.children[4]);
+
+        i++;
     })
 }
 
@@ -151,7 +156,11 @@ window.PushNewTask = () => {
                 break;
             }
             else {
+                
                 listArray.push(newList);
+
+                localStorage.setItem('lists', JSON.stringify(listArray));
+                
 
             }
             
@@ -161,7 +170,9 @@ window.PushNewTask = () => {
         
     }
     if(newTitle !== "" && newDesc !== "" && newDate !== "" && newGroup !== ""){
-        defaultList.tasks.push(new TaskConstuctor(newTitle, newDesc, newDate, newGroup, newFlag, newChecked));
+        //defaultList.tasks.push(new TaskConstuctor(newTitle, newDesc, newDate, newGroup, newFlag, newChecked));
+        listArray[0].tasks.push(new TaskConstuctor(newTitle, newDesc, newDate, newGroup, newFlag, newChecked));
+        localStorage.setItem('lists', JSON.stringify(listArray));
         document.getElementById('task-creation').remove();
         document.getElementById('new-task').setAttribute('onclick', 'NewTask()');
         DisplayTasks();
@@ -232,7 +243,6 @@ window.SaveEdit = (el) => {
     saveDateDiv.classList.add('displayed-task-date');
     saveDescDiv.classList.add('displayed-task-desc');
     editButton.classList.add('save-edit-button');
-
     saveTitleDiv.innerHTML = saveTitleVal.value;
     saveGroupDiv.innerHTML = saveGroupVal.value;
     saveDateDiv.innerHTML = saveDateVal.value;
@@ -242,6 +252,12 @@ window.SaveEdit = (el) => {
     el.replaceChild(saveDescDiv, el.children[3]);
     el.replaceChild(saveTitleDiv, el.children[4]);
     el.replaceChild(editButton, editButtonOld);
+
+    let taskToUpdate = el.id.replace('task', '');
+    let newFlag, newChecked;
+    listArray[0].tasks[taskToUpdate] = new TaskConstuctor(saveTitleDiv.innerHTML, saveDescDiv.innerHTML, saveDateDiv.innerHTML, saveGroupDiv.innerHTML, newFlag, newChecked);
+
+    localStorage.setItem('lists', JSON.stringify(listArray));
 }
 
 
@@ -249,14 +265,27 @@ window.SaveEdit = (el) => {
 
 
 
+if(localStorage.getItem('lists') == null) {
+    // LIST CONSTRUCTOR TITLE / GROUP / COLOR
+    defaultList = new ListConstructor('ToDo', 'default', 'blue'); 
+    todayList = new ListConstructor('Today', 'default', 'green');
+    upcomingList = new ListConstructor('ThisWeek', 'default', 'orange');
+    listArray.push(defaultList, todayList, upcomingList);
+    localStorage.setItem('lists', JSON.stringify(listArray));
+}
+else {
+    
+    listArray = JSON.parse(localStorage.getItem('lists'));
+    console.log(JSON.parse(localStorage.getItem('lists')));
+    defaultList = listArray[0];
+    todayList = listArray[1];
+    upcomingList = listArray[2];
+}
 
 
 
-// LIST CONSTRUCTOR TITLE / GROUP / COLOR
-window.defaultList = new ListConstructor('ToDo', 'default', 'blue'); 
-window.todayList = new ListConstructor('Today', 'default', 'green');
-window.upcomingList = new ListConstructor('ThisWeek', 'default', 'orange');
 
-listArray.push(defaultList, todayList, upcomingList);
+
+
 DisplayLists();
-
+DisplayTasks();

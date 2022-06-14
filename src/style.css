@@ -107,12 +107,15 @@ input[type='date'], input {
 }
 .displayed-task {
     display:grid;
-    grid-template-columns: 2fr 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-areas:
-    "displayedTitle displayedTitle displayedTitle"
-    "displayedDesc displayedDesc displayedDesc"
-    "displayedDate displayedGroup displayedEdit";
+    "displayedTitle displayedTitle displayedTitle displayedTitle"
+    "displayedDesc displayedDesc displayedDesc displayedDesc"
+    "displayedDate displayedGroup displayedEdit displayedDelete";
+    border-bottom: 3px solid red;
+    padding: 4px;
+    margin: 5px;
 }
 .displayed-task-title {
     grid-area: displayedTitle;
@@ -138,4 +141,9 @@ input[type='date'], input {
     background:rgb(255, 87, 87);
     border: none;
     color: white;
+}
+.displayed-task-delete{
+    grid-area: displayedDelete;
+    background:rgb(24, 24, 24);
+    color: red;
 }
